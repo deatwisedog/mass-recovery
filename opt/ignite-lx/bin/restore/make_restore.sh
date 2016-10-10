@@ -308,55 +308,16 @@ restore_mbr()
         igx_log "SUSPECT: Cannot find any devices containing MBR, step is skipped!"
         return 0
     fi
-igx_log "Starting zeroeing first 2 gb of $DISK1"
-dd if=/dev/zero of=$DISK1 bs=1M count=2048
-igx_log "Starting zeroeing first 2 gb of $DISK2"
-dd if=/dev/zero of=$DISK2 bs=1M count=2048
+	
+	igx_log "Starting zeroeing first 2 gb of $DISK1"
+	dd if=/dev/zero of=$DISK1 bs=1M count=2048
+	igx_log "Starting zeroeing first 2 gb of $DISK2"
+	dd if=/dev/zero of=$DISK2 bs=1M count=2048
    
-#    for devmbr in $bootdevs; do
-#    
-#        dev="$(echo $devmbr | awk -F ';' '{ print $1; }')"
-#        mbr_file="$(echo $devmbr | awk -F ';' '{ print $2; }')"
-#        dev_id="$(echo $devmbr | awk -F ';' '{ print $3; }')"
-#        dev_id_cur="$(igx_disk_bypath $dev)"
-#
-#        if [ "$dev_id_cur" != "$dev_id" ]; then
-#            igx_log "WARNING: $dev is not the orignal boot/root disk (original id: $dev_id current id: $dev_id_cur)!"
-#            igx_menu_yesno "DANGER: $dev is not orignal, continue?" || return 1
-#        fi
-#
-#
-#
-#        igx_log "Checking MBR from device $dev"
-#        if [ ! -b "$dev" ]; then
-#            igx_log "ERROR: Cannot find disk device $dev, ABORT!"
-#            return 2
-#        fi
-#        
-#        dd 2>/dev/null if="$dev" of="/tmp/mbr" bs=512 count=1
-#        cur_cksum="$(cksum /tmp/mbr | awk '{ print $1 }')"
-#        old_cksum="$(cksum $IGX_CONFIG_DIR/$IGX_CONFIGSET_NAME/$mbr_file | awk '{ print $1 }')"
-#        
-#        if [ $cur_cksum -eq $old_cksum ]; then
-#            igx_log "MBR from disk $dev needs no restore (cksum is $cur_cksum)"
-#        else
-#            igx_log "Restoring MBR from disk $dev"
-#            dd 2>/dev/null if="$IGX_CONFIG_DIR/$IGX_CONFIGSET_NAME/$mbr_file" of="$dev" count=1 bs=512
-#            if [ $? -ne 0 ]; then
-#                igx_log "ERROR: Cannot restore MBR for disk $dev, ABORT!"
-#                return 2
-#            else
-#                igx_log "Re- reading partition table on $(echo $dev | sed 's/[[:digit:]]*$//g') (using fdisk)"
-#                echo "w" | fdisk 2>&1 "$(echo $dev | sed 's/[[:digit:]]*$//g')"
-#                igx_log "Waiting 5 seconds before we go ahead (udev needs that)..."
-#                sleep 5
-#            fi
-#        fi
-#
-#    done
-
-echo -e "n\nn\np\n1\n\n\nw" | fdisk $DISK1
-echo -e "n\nn\np\n1\n\n\nw" | fdisk $DISK2
+	igx_log "Start partitioning of $DISK1"
+	echo -e "n\nn\np\n1\n\n\nw" | fdisk $DISK1
+	igx_log "Start partitioning of $DISK2"
+	echo -e "n\nn\np\n1\n\n\nw" | fdisk $DISK2
     
     return 0
 }
@@ -373,39 +334,17 @@ restore_raid()
         return 0
     fi
         
-    md_devices="$(awk -F ';' '/^md/ { print $2; }' $IGX_SYSCONF_FILE | sort -u)"
-    
-    for md_dev in $md_devices; do
-    
-        if [ -b $md_dev ]; then
-            igx_log "Raid device $md_dev allready exists, testing if device is up"
-            mdadm -D $md_dev
-            if [ $? -eq 0 ]; then
-                igx_log "Raid device $md_dev is up"
-                continue
-            fi
-            igx_log "Raid device $md_dev is not running, trying startup"
-        fi
-    
-        md_disks="$(awk -F ';' '/^md/ { if($2 == "'$md_dev'") print $3; }' $IGX_SYSCONF_FILE | sort | tr '\n' ' ')"
-        md_level="$(awk -F ';' '/^md/ { if($2 == "'$md_dev'") { gsub("raid", "", $4); print $4; } }' $IGX_SYSCONF_FILE | sort -u)"
-        md_devs="$(echo $md_disks | wc -w)"
         
-        igx_log "Bringing up raid device $md_dev (level=$md_level, disks=$md_disks)"
-        igx_log "Testing if we can assemble raid without re-creation"
-        
-        
-        igx_log "Assemble of raid device $md_dev failed, no old superblock found!"
-        igx_log "We need to create a new raid$md_level on device $md_dev"
+        igx_log "We need to create a new /dev/md0 by mdadm on devices $PART1 and $PART2"
         
         mdadm --create /dev/md0 --assume-clean --run --level=1 --raid-devices=2 $PART1 $PART2 
         if [ $? -ne 0 ]; then
-            igx_log "ERROR: Cannot re- create raid$md_level on device $md_dev, ABORT!"
+            igx_log "ERROR: Cannot re- create /dev/md0 on devices $PART1 and $PART2, ABORT!"
             igx_log "Please create manual and restart restore like described below!"
             return 1
         fi
 
-        igx_log "Raid$md_level on device $md_dev created!"
+        igx_log "Raid on device /dev/md0 created!"
         IGX_GEN_MD_CONF=1
       
     done
