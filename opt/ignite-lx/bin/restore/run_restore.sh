@@ -43,9 +43,6 @@ cleanup()
     exit $retval
 }
 
-#
-# Select restore Mode
-#
 run_mode()
 {
 
