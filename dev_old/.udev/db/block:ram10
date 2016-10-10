@@ -1,0 +1,5 @@
+N:ram10
+S:block/1:10
+W:17
+E:LVM_SBIN_PATH=/sbin
+E:ID_FS_TYPE=

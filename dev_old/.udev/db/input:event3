@@ -1,0 +1,7 @@
+N:input/event3
+S:char/13:67
+S:input/by-path/platform-i8042-serio-0-event-kbd
+E:ID_CLASS=kbd
+E:ID_SERIAL=noserial
+E:ID_PATH=platform-i8042-serio-0
+E:DMI_VENDOR=Gigabyte Technology Co., Ltd.

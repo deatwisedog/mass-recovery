@@ -1,0 +1,8 @@
+# This script designed by Sonda Technologies for working with
+# Futronic FS80, FS88 devices
+# 
+# Sonda Technologies 2008
+#
+
+# Futronic Fingerprint Scanner USB 2.0
+SUBSYSTEM=="usb", ACTION=="add", ENV{DEVTYPE}=="usb_device", NAME="bus/usb/$env{BUSNUM}/$env{DEVNUM}" , SYSFS{idVendor}=="1491", SYSFS{idProduct}=="0020" , MODE="666"

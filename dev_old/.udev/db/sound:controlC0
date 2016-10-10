@@ -1,0 +1,5 @@
+N:snd/controlC0
+S:char/116:8
+S:snd/by-path/pci-0000:00:03.0
+E:ID_PATH=pci-0000:00:03.0
+E:ACL_MANAGE=1

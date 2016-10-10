@@ -1,0 +1,12 @@
+N:loop1
+S:block/7:1
+S:disk/by-label/rassvet_rdbms_bin_20150604
+W:54
+E:ID_FS_VERSION=Joliet\x20Extension
+E:ID_FS_LABEL=rassvet_rdbms_bin_20150604
+E:ID_FS_LABEL_ENC=rassvet_rdbms_bin_20150604
+E:ID_FS_TYPE=iso9660
+E:ID_FS_USAGE=filesystem
+E:LVM_SBIN_PATH=/sbin
+E:UDISKS_PRESENTATION_NOPOLICY=1
+E:UDISKS_PRESENTATION_HIDE=1

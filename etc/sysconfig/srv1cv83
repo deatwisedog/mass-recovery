@@ -1,0 +1,56 @@
+#------------------------------------------------------------
+# 1C:Enterprise server configuration parameters
+#------------------------------------------------------------
+
+# 1C:Enterprise server keytab file. 
+# default - usr1cv83.keytab file in 1C:Enterprise server 
+#           installation directory
+#
+#SRV1CV8_KEYTAB=
+
+# Number of the cluster port created by default during first
+# launch of ragent
+#
+# default - 1540
+#
+#SRV1CV8_PORT=
+
+# Number of cluster agent main port. This port is used by the
+# cluster console to address the central server. Cluster agent 
+# port is also specified as the IP port of the working server.
+#
+# default - 1541
+#
+#SRV1CV8_REGPORT=
+
+# Port range for connection pool
+# example values:
+#   45:49
+#   45:67,70:72,77:90
+#
+# default - 1560:1691
+#
+#SRV1CV8_RANGE=
+
+# 1C:Enterprise server configuration debug mode
+# 0 - default - off
+# 1 - on
+#
+#SRV1CV8_DEBUG=
+
+# Path to directory with claster data
+# default - $HOMEDIR/.1cv83/1C/1Cv83
+#
+#SRV1CV8_DATA=
+
+# Security level:
+# 0 - default - unprotected connections
+# 1 - protected connections only for the time of user
+#     authentication
+# 2 - permanently protected connections
+#
+#SRV1CV8_SECLEV=
+
+#------------------------------------------------------------
+# end of config
+#------------------------------------------------------------

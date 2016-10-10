@@ -1,0 +1,5 @@
+# Command line options here
+DHCRELAYARGS=""
+# Lower and upper interfaces for DHCPv6
+LOWER_INTERFACES=""
+UPPER_INTERFACES=""
